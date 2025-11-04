@@ -10,7 +10,7 @@ const VideoPlaying = () => {
     const { original_title, overview, id } = movie[0];
 
     return (
-        <div>
+        <div className='w-screen'>
             <MovieInfo title={original_title} overview={overview} />
             <MovieTrailer movieId={id}/>
         </div>

@@ -10,7 +10,7 @@ const MovieGenre = () => {
     const nowplaying = useSelector((store) => store.movies?.addNowPlayingMovies);
     useGetCategoryList()
 
-    return (<div className='bg-black/100 w-screen'>
+    return (<div className='w-screen bg-black/100'>
         <div className='relative -mt-52 z-20'>
             <GenreList title={"Now Playing Movies"} genreList={nowplaying} />
             <GenreList title={"Top Rated Movies"} genreList={topRated} />

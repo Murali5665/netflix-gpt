@@ -42,7 +42,7 @@ export const userLogin = async (email, password) => {
     }
 };
 
-export const signOut = () => {
+export const handleSignOut = () => {
     signOut(auth).then(() => {
         // Sign-out successful.
     }).catch((error) => {

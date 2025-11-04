@@ -7,7 +7,7 @@ import MovieGenre from './MovieGenre';
 const MainContainer = () => {
     useNowMovies();
     return (
-        <div>
+        <div className='w-screen'>
             {/* Video Playing Container */}
             <VideoPlaying />
             {/* List of different MovieGenres */}
