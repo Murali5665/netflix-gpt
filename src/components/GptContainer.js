@@ -1,6 +1,6 @@
 import React from 'react';
 import GptSearch from './GptSearch';
-import { Background_url } from '../utils/constant';
+import { Background_url } from '../utils/constants';
 import GptResults from './GptResults';
 
 

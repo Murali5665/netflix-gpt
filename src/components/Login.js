@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { userLogin, userSignUp, validateCreds } from '../utils/userAuthentication';
-import { Background_url } from '../utils/constant';
+import { Background_url } from '../utils/constants';
 import Header from './Header';
 
 

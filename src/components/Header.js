@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Netflix_url } from '../utils/constant';
+import { Netflix_url } from '../utils/constants';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
@@ -15,11 +15,7 @@ const Header = () => {
     const navigate = useNavigate();
 
     const onclickGptButton = () => {
-        console.log("GPT Button Clicked");
-        
-        // dispatch(addGptButton(gpt));
         dispatch(toggleGptSearch());
-        console.log("GPT Button State:", gpt);
     }
 
     const handleSignOutClick = async () => {

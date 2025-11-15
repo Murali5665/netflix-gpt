@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { addTopRatedMovies } from "../utils/movieSlice"
 import { useDispatch, useSelector } from "react-redux";
-import { API_Options } from "../utils/constant";
+import { API_Options } from "../utils/constants";
 
 
 const useGetCategoryList = () => {
