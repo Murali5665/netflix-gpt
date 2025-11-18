@@ -5,7 +5,8 @@ import userEvent from "@testing-library/user-event"
 import { Provider } from "react-redux";
 import appStore from "../../utils/appStore";
 import Header from "../Header"
-
+import { handleSignOut } from "../../utils/userAuthentication";
+import { addUser } from "../../utils/userSlice";
 
 
 // Mock fetch globally
@@ -27,9 +28,18 @@ jest.mock("firebase/auth", () => ({
   })
 }))
 
-// Mock firebase config
 jest.mock("../../utils/firebase", () => ({
   auth: {},
+}));
+
+jest.mock("../../utils/userAuthentication", () => ({
+  handleSignOut: jest.fn(),
+}))
+
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
 }));
 
 
@@ -74,21 +84,67 @@ describe("Gpt toggle test", () => {
   });
 });
 
-describe("Singout button test", () => {
+describe("Header Sign Out Tests", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
 
-  it("should signout user", async () =>{
-    customRender(<Header/>);
-
-    const signOutButton = screen.getByRole("button", { name: /sign out/i});
-    expect(signOutButton).toBeInTheDocument();
-
-    // await user.click(singoutButton);
-
-    // expect(/).
-
-
-
-
-
+    // insert a user into Redux store so Sign Out button appears
+    appStore.dispatch(
+      addUser({
+        uid: "1",
+        email: "test@test.com",
+        displayName: "Test User",
+      })
+    );
   });
+
+  it("should call handleSignOut when clicking Sign Out", async () => {
+    const user = userEvent.setup();
+    customRender(<Header />);
+
+    const signOutButton = screen.getByRole("button", { name: /sign out/i });
+
+    await user.click(signOutButton);
+
+    expect(handleSignOut).toHaveBeenCalled();
+  });
+
+  it("should navigate to '/' after clicking Sign Out", async () => {
+    const user = userEvent.setup();
+    customRender(<Header />);
+
+    const signOutButton = screen.getByRole("button", { name: /sign out/i });
+
+    await user.click(signOutButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith("/");
+  });
+
+  it("should remove user from Redux store after Sign Out", async () => {
+    const user = userEvent.setup();
+    customRender(<Header />);
+
+    const signOutButton = screen.getByRole("button", { name: /sign out/i });
+    await user.click(signOutButton);
+
+    const state = appStore.getState().user;
+    expect(state).toBeNull();  // after removeUser()
+  });
+
+  it("should handle errors thrown by handleSignOut without crashing", async () => {
+    const user = userEvent.setup();
+
+    handleSignOut.mockImplementation(() => {
+      throw new Error("Sign-out error");
+    });
+
+    customRender(<Header />);
+
+    const signOutButton = screen.getByRole("button", { name: /sign out/i });
+    await user.click(signOutButton);
+
+    // Component should NOT crash
+    expect(signOutButton).toBeInTheDocument();
+  });
+
 });
